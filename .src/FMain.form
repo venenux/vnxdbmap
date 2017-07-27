@@ -31,7 +31,7 @@
     }
     { PictureBox1 PictureBox
       MoveScaled(0,0,7,7)
-      Picture = Picture["iconobd.png"]
+      Picture = Picture[".hidden/icons/mapvistas.png"]
       Stretch = True
     }
     { ButtonAnalisisCompleto Button
@@ -56,7 +56,7 @@
     { PictureBoxUpdate PictureBox
       MoveScaled(99,1,9,13)
       ToolTip = ("Comprueba si existe una nueva version")
-      Picture = Picture["gambas update version actualizacion .png"]
+      Picture = Picture[".hidden/images/gambas update version actualizacion .png"]
       Stretch = True
       Border = Border.Raised
     }
@@ -67,7 +67,7 @@
   }
   { TextAreaCompleta TextArea
     MoveScaled(2,19,93,19)
-    ToolTip = ("Introduzca aqui la definicion de la tabla...")
+    ToolTip = ("Introduzca aqui la definicion de la tabla") & "..."
   }
   { VSplit1 VSplit
     MoveScaled(2,29,108,43)
@@ -94,7 +94,7 @@
         MoveScaled(1,1,106,6)
         { Label4 Label
           MoveScaled(1,0,40,4)
-          Text = ("Asignar tipos....")
+          Text = ("Asignar tipos.") & "..."
         }
         { ButtonGenerarCodigo Button
           MoveScaled(72,0,32,6)

@@ -10,6 +10,8 @@ Private contadorEtiquetaRectangulo As Integer 'contador de tablas y vistas que s
 
 Private ContadorConector As Integer
 
+Private rutaproject As String = User.home & "/Devel/newproject"
+
 Public Struct Par
   x As String
   y As String
@@ -192,7 +194,7 @@ Public Sub Generar()
 
   contenido &= cuerpo & conectores & "</svg>"
 
-  File.Save(User.Home & "/temporal/diagrama.svg", contenido)
+  File.Save(rutaproject & "/diagrama.svg", contenido)
 
 End
 

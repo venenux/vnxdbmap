@@ -1,5 +1,8 @@
 ' Gambas class file
 
+Private rutaproject As String = User.home & "/Devel/newproject"
+
+
 Public Sub Button1_Click()
   
   Me.Close
@@ -11,7 +14,7 @@ Public Sub Form_Open()
   Dim lineas As String[]
   Dim contenido As String
   
-  Shell "find " & User.home & "/temporal -name '*.class' -o -name '*.module' | xargs wc -l" To contenido
+  Shell "find " & rutaproject & " -name '*.class' -o -name '*.module' | xargs wc -l" To contenido
   
   TextAreaInforme.text = contenido
   lineas = Split(contenido, "\n")
