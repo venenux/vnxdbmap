@@ -279,10 +279,10 @@ Public Sub ButtonBuscarBaseDeDatos_Click()
     ' Copy Replace$(Dialog.path, ".sqlite", "") & ".tag.gz"
     File.Save(rutaproject & "/.src/modelo/conexion/Conexion.class", creatabla.ModuloBaseDatos(Dialog.path, "Sqlite3", Dialog.path))
     Try Copy "estructura.html" To rutaproject & "/" & "estructura.html"
-    Try Copy "FormAutomaticoDinamico.class" To rutaproject & "/.src/" & "FormAutomaticoDinamico.class"
-    Try Copy "FormAutomaticoDinamico.form" To rutaproject & "/.src/" & "FormAutomaticoDinamico.form"
+    Try Copy ".hidden/datacopy/FormAutomaticoDinamico.class" To rutaproject & "/.src/" & "FormAutomaticoDinamico.class"
+    Try Copy ".hidden/datacopy/FormAutomaticoDinamico.form" To rutaproject & "/.src/" & "FormAutomaticoDinamico.form"
     '------------------------------------------------------------------------------
-    Try Copy "comun1.module" To rutaproject & "/.src/" & "comun.module"  'Añade copia de modulo comun de funciones 0.2.93
+    Try Copy ".hidden/datacopy/comun.module" To rutaproject & "/.src/" & "comun.module"  'Añade copia de modulo comun de funciones 0.2.93
     '------------------------------------------------------------------------------
     nombrecomprimido = File.Name(Replace$(Dialog.Path, ".sqlite", "") & ".tar.gz")
     
