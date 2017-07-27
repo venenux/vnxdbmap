@@ -7,6 +7,7 @@ Private nombreBaseDeDatos As String
 Private rutabasededatos As String
 
 Public contenidoTablasVistas As String
+Public estructuradbsql As String
 
 Private generarSVG As New GenerarDiagramaSVG
 
@@ -268,8 +269,9 @@ Public Sub ButtonBuscarBaseDeDatos_Click()
       contenido &= hresult["sql"] & gb.NewLine
       hresult.MoveNext
     Wend
+    estructuradbsql = contenido ' el contenido preprocesado perjudica las lineas de comentarios, salvar sin preprocesar
     contenido = comun.preprocesarContenido(contenido) ''NOTE: Mejora para quitar retornos de carro.
-    TextAreaCompleta.text = contenido
+    TextAreaCompleta.text = contenido ' el contenido preprocesado es solo util para la creacion de codigo, ya que funciona linea a linea en cada tabla
     rutabasededatos = Dialog.Path
     'copio la base de datos dentro del proyecto...
     'Try Copy Dialog.Path To rutaproject & "/.src" & "/" & File.Name(Dialog.path)
@@ -332,7 +334,11 @@ Public Sub ButtonAnalisisCompleto_Click()
     
   Endif
   
-  File.Save(rutaproject & "/EstructuraBD.txt", TextAreaCompleta.text)
+  ' nota importante> el contenid preprocesado es una linea por estructura, 
+  ' esto porque el programa crea un mapa/clase por cada linea, asume una linea=una estructura de tabla/vista
+  ' esto es ineficiente en cuanto a los comentarios, en el preprocesador se debe eliminar a partir del caracter de -- 
+  ' por ende aqui se salva la estructura original, ya que el preprocesador no tiene la capacidad de salvar todo sin estropearla
+  File.Save(rutaproject & "/EstructuraBD.txt", estructuradbsql)
   
   'grafica de las tablas y vistas
   generarSVG.Generar() 'genera el archivo grafico de la base de datos 0.2.99903
