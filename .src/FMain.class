@@ -299,7 +299,7 @@ End
 Public Sub ButtonAnalisisCompleto_Click()
   
   Dim lineasDeCodigo As String[]
-  Dim a As Integer
+  Dim a, cantidadtablasprocesar As Integer
   Dim caso As String
   
   If TextAreaCompleta.text <> "" Then
