@@ -31,20 +31,77 @@ Public Function primeraMay(cadena As String) As String
   
 End
 
+Public Function removerparte(cadena As String, cadinicio As String, cadfin As String, Optional modo As Integer = 0) As String
+  
+  Dim posini, posfin As Integer = 0
+  Dim cadena1, cadena2 As String = ""
+ If modo = 1 Then
+  ' segun julio funciona pero SOLO PAR AUNA LINEA es decir solo para sqlite y comentarios "--", no soporta "COMMENT" o /**// multilineas
+  cadena1 = between(cadena, cadinicio, cadfin) ' se usa beetween dado debe ser exacto no BetweenMays
+  cadena = Replace(cadena, cadinicio & cadena1 & cadfin, "", gb.Binary)
+  Return cadena
+  Else
+      posini = InStr(cadena, cadinicio, 0, gb.IgnoreCase) - Len(cadinicio)
+      posfin = InStr(cadena1, cadfin, posini + Len(cadinicio), gb.IgnoreCase) - Len(cadfin)
+    ' TODO: reajustar despues con un recorido del arreglo y busqueda secuencial de tamanio y posiciones
+    cadena1 = Mid(cadena, 1, posini)
+    cadena2 = Mid(cadena, posfin, Len(cadena))
+    Return cadena1 & cadena2
+  Endif
+End
+
+
 Public Function preprocesarContenido(contenido As String) As String
   ''TODO: procesar contenido para poner las ordenes en una sola tabla.
   
   Dim a As Integer
   Dim lineas As String[]
+  Dim lineasycoments As String[]
   Dim contenidoCompactado As String
   
   contenido = Replace(contenido, "\t", " ")
-  'contenido = Replace(contenido, "\n", " ")
   lineas = Split(contenido, "\n")
   
-  contenidoCompactado = lineas[0] 'la primera linea siempre será una creacion de tabla o vista
-  
-  For a = 1 To lineas.Max
+  ' *********** PARTE 1 ini: comentarios preconte ini hack feo "ugly hack" para soportar mientras comentarios 
+  ' convierte todo los tipos de comentarios a un solo tipo, el entre /* y */ esta al 80% funcional pro ahora, enfuturo unparser aparte
+  For a = 0 To lineas.Count - 1
+    ' caso 1 solo hay una unica linea con -- y fin de linea al final, y siempre tiene un espacio al comienzo
+    If InStr(Upper$(lineas[a]), " --") > 0 And InStr(Upper$(lineas[a]), "COMMENT") = 0 Then 
+      lineas[a] = Replace(lineas[a], " --", " /* '' ") ' preparando para que sea leido por gambas como documentacion futura
+      lineas[a] = lineas[a] & " */" ' si existia un "--" el resto de la linea esta comentada, asumir colocar al final comenario y fin de linea
+    Endif
+    ' caso 2, la linea contiene COMMENT "", y tambien -- pero precediendo o no el comment, detectar donde y parsear  comenatar esto
+    If InStr(Upper$(lineas[a]), "COMMENT") > 0 And InStr(Upper$(lineas[a]), " --") = 0 Then 
+        lineas[a] = Replace(lineas[a], " COMMENT \"", " /* '' ") ' preparando para que sea leido por gambas como documentacion futura
+        lineas[a] = Replace(lineas[a], "\",", "*/,") ' el final de un COMMENT es "," pero puede seguirlo un nuevo campo en misma linea, seguir sera
+        lineas[a] = Replace(lineas[a], ",", "/**/,") ' el final de un COMMENT es "," pero puede seguirlo un nuevo campo en misma linea, seguir sera
+        ' TODO: nos e asegura que justo despues de " venga , por ende a futuro usar expresiones regulares o contador de caracteres a partir de la posicion
+    Else  ' existe tanto -- como COMMENT analizar posicion
+      ' comment existe pero lo precede un -- el resto de la linea se obvia
+      If InStr(Upper$(lineas[a]), " --") < InStr(Upper$(lineas[a]), "COMMENT") Then
+        lineas[a] = Replace(lineas[a], " COMMENT \"", " ") ' preparando para que sea leido por gambas como documentacion futura
+      lineas[a] = Replace(lineas[a], " --", " /* '' ") ' preparando para que sea leido por gambas como documentacion futura
+        lineas[a] = lineas[a] & " */" ' si existia un "--" el resto de la linea esta comentada, asumir colocar al final comenario y fin de linea
+      ' TODO: cambiar esa linea por expresion regular, no se asegura la secuentcia ", en una linea sin que despues de '"' venga ','
+      Endif
+       ' comment existe y precede un "--", es decir el COMMENT esta primero
+      If InStr(Upper$(lineas[a]), "COMMENT") < InStr(Upper$(lineas[a]), "--") Then
+        lineas[a] = Replace(lineas[a], " COMMENT \"", " /* '' ") ' preparando para que sea leido por gambas como documentacion futura
+      lineas[a] = Replace(lineas[a], " --", " ") ' preparando para que sea leido por gambas como documentacion futura
+        lineas[a] = Replace(lineas[a], "\",", "*/,") ' preparando para que sea leido por gambas como documentacion futura"
+      ' TODO: cambiar esa linea por expresion regular, no se asegura la secuentcia ", en una linea sin que despues de '"' venga ','
+      Endif
+    Endif
+    
+  Next
+  ' *********** PARTE 1 fin: listo comentarios preconte ini hack feo "ugly hack" para soportar mientras comentarios 
+  lineasycoments = lineas
+  ' los comentarios del parser deben conservarse en el string para despues pasarse a los DAO como documentation, los dejo
+ 
+  ' *********** PARTE 2 ini: hack para procesar cada estructura tabla/vista, como una linea por estructura, y asi cad linea una clase DAO/VO
+  ' el coduigo original se vale de fines de lineas y que cada campo/formato tiene separacion de comas entre estos
+  contenidoCompactado = lineas[0] ' TODO: mejorar: la primera linea siempre será una creacion de tabla o vista SOLO EN CASO DE SQLITE, 
+  For a = 1 To lineas.Count - 1          ' en vez de Max usar count compatible gambas 3.X
     If lineas[a] = "" Then Continue
     If lineas[a] = ")" Then 
       contenidoCompactado &= " " & lineas[a]
@@ -55,7 +112,7 @@ Public Function preprocesarContenido(contenido As String) As String
       contenidoCompactado &= " " & lineas[a]
     Else
       'es una nueva linea
-      contenidoCompactado &= gb.CrLf & lineas[a]
+      contenidoCompactado &= gb.CrLf & lineas[a]  ' >> cada CREATE TABLE/VISTA es uan nueva linea
       
     Endif
     
@@ -66,15 +123,17 @@ Public Function preprocesarContenido(contenido As String) As String
   contenidoCompactado = Replace$(contenidoCompactado, "DEFAULT", "")
   contenidoCompactado = Replace$(contenidoCompactado, "`", "")
   contenidoCompactado = Replace$(contenidoCompactado, "\"", "")
-  
-  contenidoCompactado = Replace$(contenidoCompactado, "NOT NULL", "")
+  contenidoCompactado = Replace$(contenidoCompactado, " NOT", "")
+  contenidoCompactado = Replace$(contenidoCompactado, " NULL", "")
   
   'quito espacios sobrantes
   For a = 1 To 10
-    contenidoCompactado = Replace$(contenidoCompactado, "  ", " ")
+    contenidoCompactado = Replace$(contenidoCompactado, "  ", " ") ' TODO: esto no es efectivo cambiar en futuro
   Next 
+  ' *********** PARTE 2 fin: del hack para procesar cada estructura tabla/vista, como una linea por estructura, y asi cad linea una clase DAO/VO
   
   Print "-   SIN PROCESAR     -"
+  contenido = lineasycoments.Join("\n") ' Print contenido
   Print contenido
   Print "----------------------"
   Print "-     PROCESADO      -"

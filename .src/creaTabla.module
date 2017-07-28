@@ -621,7 +621,7 @@ End
 '---------------------------------------- version 0.2.2 -----------------------
 Public Function actualizarDatosGridviewnReferenciado() As String
   
-  Return File.Load("autogridviewObservador")
+  Return File.Load(".hidden/datacopy/autogridviewObservador")
   
 End
 
@@ -868,6 +868,6 @@ End
 
 Public Function generaGridaHTML() As String
   
-  Return File.Load("ImprimirRapido.txt")
+  Return File.Load(".hidden/datacopy/ImprimirRapido.txt")
   
 End

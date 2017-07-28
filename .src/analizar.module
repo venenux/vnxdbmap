@@ -36,7 +36,7 @@ End
 Public Function tareaTabla(codigo As String) As Collection
   
   Dim linea As String[]
-  Dim a As Integer
+  Dim a, lenpos As Integer
   '  Dim campoNuevo As String
   ' Dim nombretmp As String[]
   Dim nombreTabla As String
@@ -60,7 +60,7 @@ Public Function tareaTabla(codigo As String) As Collection
     'analisis linea
     expresion = linea[a]
     nombreTabla = Replace$(nombreTabla, "'", "")
-    nombreTabla = comun.primeraMay(Between(expresion, "CREATE TABLE \"", "\""))
+    nombreTabla = comun.primeraMay(Between(expresion, "CREATE TABLE ", "\""))
     
     If InStr(nombreTabla, " (") <> 0 Then
       nombreTabla = Mid$(nombreTabla, 1, InStr(nombreTabla, "(") - 2)
@@ -75,9 +75,19 @@ Public Function tareaTabla(codigo As String) As Collection
       Return datos
     Endif
     
-    camposEnbruto = Replace(Between(expresion, "(", ")"), "'", "")
+    ' camposEnbruto = Replace(Between(expresion, "(", ")"), "'", "") '  bug #12 https://gitlab.com/venenux/vnxdbmap/issues/12
+    expresion = Replace(expresion, "CREATE TABLE ", "")
     
-    definicion = Split(camposEnBruto, ",")
+    camposEnbruto = expresion
+    expresion = Mid(camposEnbruto, InStr(expresion, "(", 0) + 1)
+    camposEnbruto = expresion
+    lenpos = InStr(expresion, ")", -1) - 1
+    camposEnbruto = Mid(camposEnbruto, 1, lenpos)
+    camposEnbruto = expresion
+    camposEnbruto = Replace(expresion, "'", "") ' soporta
+    'camposEnbruto = comun.removerparte(camposEnbruto, "/*", "*/") ' por ahora se remueven,  mucho trabajo conservarlos si no esta bien definido respecto la comma
+    
+    definicion = Split(camposEnBruto, ",") '  esto esta malo, no soporta VARCHAR () ni DECIMAL() ni comments, pero pro ahora se deja
     
     For Each texto In definicion
       texto = LTrim$(RTrim$(texto))
