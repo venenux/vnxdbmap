@@ -306,9 +306,14 @@ Public Sub ButtonAnalisisCompleto_Click()
     'Analiza Vista
     
     lineasDeCodigo = Split(TextAreaCompleta.text, gb.NewLine)
+    cantidadtablasprocesar = lineasDeCodigo.Count - 1
     
-    For a = 0 To lineasDeCodigo.max
-      ProgressBar1.Value = a / lineasDeCodigo.max
+    For a = 0 To cantidadtablasprocesar ' max es solo soportado en gabmas >> 3.2
+      If cantidadtablasprocesar = 0 Then 
+        ProgressBar1.Value = 1    ' hack para bug #11 https://gitlab.com/venenux/vnxdbmap/issues/11
+      Else
+        ProgressBar1.Value = a / cantidadtablasprocesar
+      Endif
       TextAreaUnaVista.text = lineasDeCodigo[a]
       caso = ButtonAnalizarDato()
       
