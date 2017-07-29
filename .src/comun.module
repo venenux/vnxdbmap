@@ -113,7 +113,20 @@ Public Function preprocesarContenido(contenido As String) As String
     ' listo ahora soporta el que tenga *(pero no se use) comentarios o valores por defecto, si no hay campos multilineas
     If lineas[a] = "" Then
      Continue      ' lamentablemente por ahora el codigo esta demasiado desorganizado para mejorar soporte de valores por defecto
+    ' TODO: comentar el codigo, si se hace esto aqui, no soportaria multicampos en lineas simples o en una sola linea, hacer en analisis
     Else
+      ' bug #14 resolucion parcial: https://gitlab.com/venenux/vnxdbmap/issues/14
+      ' UGLY HACK temporal para soportar definicion campos en una sola linea, por ahora solo dos campos (es para que no se me olvide)
+      ' If RInStr(comentarioremovertemp, ",") <> InStr(comentarioremovertemp, ",") Then
+      '   tempsc Split(comentarioremovertemp, ",")[0]
+      '   tempsc = Scan(comentarioremovertemp, "* * *")
+      '   comentarioremovertemp = tempsc[0] & " " & tempsc[1] ' asi que simplemente los eliminamos los valores por defecto o los null
+      '   lineas[a] = comentarioremovertemp
+      '   tempsc Split(comentarioremovertemp, ",")[0]
+      '   tempsc = Scan(comentarioremovertemp, "* * *")
+      '   comentarioremovertemp = tempsc[0] & " " & tempsc[1] ' asi que simplemente los eliminamos los valores por defecto o los null
+      '   lineas[a] = comentarioremovertemp
+      ' Endif
       tempsc = Scan(comentarioremovertemp, "* * *")
       comentarioremovertemp = tempsc[0] & " " & tempsc[1] ' asi que simplemente los eliminamos los valores por defecto o los null
       lineas[a] = comentarioremovertemp
