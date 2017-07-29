@@ -82,16 +82,24 @@ Public Function tareaTabla(codigo As String) As Collection
     expresion = Mid(camposEnbruto, InStr(expresion, "(", 0) + 1)
     camposEnbruto = expresion
     lenpos = InStr(expresion, ")", -1) - 1
-    camposEnbruto = Mid(camposEnbruto, 1, lenpos)
+    camposEnbruto = Mid(camposEnbruto, 1, InStr(expresion, ")", -1) - 1)
     camposEnbruto = expresion
     camposEnbruto = Replace(expresion, "'", "") ' soporta
     'camposEnbruto = comun.removerparte(camposEnbruto, "/*", "*/") ' por ahora se remueven,  mucho trabajo conservarlos si no esta bien definido respecto la comma
-    
+    ' TODO: procesar aqui el bug #13, si se sigue haciendo en comun.module no soportara singlelines multicolumns definition
     definicion = Split(camposEnBruto, ",") '  esto esta malo, no soporta VARCHAR () ni DECIMAL() ni comments, pero pro ahora se deja
-    
+    ' comentar el codigo, si se hace esto aqui, no soportaria multicampos en lineas simples o en una sola linea, hacer en analisis
+    ' Else
+    '   tempsc = Scan(comentarioremovertemp, "* * *")
+    '   comentarioremovertemp = tempsc[0] & " " & tempsc[1] ' asi que simplemente los eliminamos los valores por defecto o los null
+    '   lineas[a] = comentarioremovertemp    
     For Each texto In definicion
       texto = LTrim$(RTrim$(texto))
+      If InStr(texto, " ") > 0 Then
       nombrecampo = Scan(texto, "* *")[0] ' Between(texto, "\"", "\"") 'extrae el nombre del campo
+      Else
+        nombrecampo = texto  ' hack temporal para cuadno venga mal parseado por tener un valor por defecto
+      Endif
       'elimino el nombre del campo y las comillas'
       tipo = Replace(texto, "\"" & nombrecampo & "\"", "")
       tipo = Replace(texto, nombrecampo & " ", "")
@@ -268,7 +276,14 @@ Public Function comprobartipo(tipo As String) As String
       Case "VARCHAR"
         Return "String"
       Default
-        Return comun.primeraMay(tipo)
+        ' falta todo tipo de dato numerico que se pueda definir como intervalo
+        If InStr(tipo, "NUMERIC", 0, gb.IgnoreCase) > 0 Or InStr(tipo, "DECIMAL", 0, gb.IgnoreCase) > 0 Then
+          ' http://gambaswiki.org/wiki/doc/db-type-mapping
+          Return "Float"
+        Else
+          Return "String"
+        Endif
+        ' Return comun.primeraMay(tipo) ' que? una calse de este tipo de dato desconocido, devuelve VARCHAR O NUMERIC y listo!
         
     End Select
     'se trata de un tipo que contiene una llave... devolver null'
