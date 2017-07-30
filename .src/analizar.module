@@ -49,6 +49,10 @@ Public Function tareaTabla(codigo As String) As Collection
   Dim tipo As String
   '1º extrae las lineas
   linea = Split(codigo, gb.NewLine)
+  
+  ' bug #15 no permitir ` en los nombres de clases
+  linea[a] = Replace(linea[a], "`", "", gb.IgnoreCase)
+  
   listaVistas.Clear() 'reuso aunque sea para tabla...
   listaCampos.Clear()
   listaCamposTipo.Clear()
