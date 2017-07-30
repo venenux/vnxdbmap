@@ -93,6 +93,12 @@ Public Function preprocesarContenido(contenido As String) As String
         lineas[a] = Replace(lineas[a], "\",", "*/,") ' preparando para que sea leido por gambas como documentacion futura"
       ' TODO: cambiar esa linea por expresion regular, no se asegura la secuentcia ", en una linea sin que despues de '"' venga ','
       Endif
+      ' comment existe sin que exista un -- solo remuevo este
+      If InStr(Upper$(lineas[a]), "COMMENT") > 0 And InStr(Upper$(lineas[a]), "--") = 0 Then
+        lineas[a] = Replace(lineas[a], " COMMENT \"", " ") ' preparando para que sea leido por gambas como documentacion futura
+        lineas[a] = Replace(lineas[a], "\",", "*/,") ' preparando para que sea leido por gambas como documentacion futura"
+      ' TODO: cambiar esa linea por expresion regular, no se asegura la secuentcia ", en una linea sin que despues de '"' venga ','
+      Endif
     Endif
     
   Next
@@ -108,28 +114,26 @@ Public Function preprocesarContenido(contenido As String) As String
     comentarioremovertemp = lineas[a]
     comentarioremovertemp = Between(comentarioremovertemp, "/*", "*/")
     lineas[a] = Replace(lineas[a], "/*" & comentarioremovertemp & "*/", "", gb.IgnoreCase)
-    ' bug #13 https://gitlab.com/venenux/vnxdbmap/issues/13 por ahora no se puede procesar el valor pro defecto para el codigo fuente
-    comentarioremovertemp = LTrim(lineas[a])
-    ' listo ahora soporta el que tenga *(pero no se use) comentarios o valores por defecto, si no hay campos multilineas
+    ' reprocesar ahora los valores por defectos los rtrim y ltrim aseguran inicio y fin consistentes
     If lineas[a] = "" Then
      Continue      ' lamentablemente por ahora el codigo esta demasiado desorganizado para mejorar soporte de valores por defecto
     ' TODO: comentar el codigo, si se hace esto aqui, no soportaria multicampos en lineas simples o en una sola linea, hacer en analisis
     Else
-      ' bug #14 resolucion parcial: https://gitlab.com/venenux/vnxdbmap/issues/14
+      ' bug #14 resolucion parcial: https://gitlab.com/venenux/vnxdbmap/issues/14, aseguro inicio y fin consistentes
+      comentarioremovertemp = LTrim(lineas[a])
+      comentarioremovertemp = RTrim(comentarioremovertemp)
       ' UGLY HACK temporal para soportar definicion campos en una sola linea, por ahora solo dos campos (es para que no se me olvide)
-      ' If RInStr(comentarioremovertemp, ",") <> InStr(comentarioremovertemp, ",") Then
-      '   tempsc Split(comentarioremovertemp, ",")[0]
-      '   tempsc = Scan(comentarioremovertemp, "* * *")
-      '   comentarioremovertemp = tempsc[0] & " " & tempsc[1] ' asi que simplemente los eliminamos los valores por defecto o los null
-      '   lineas[a] = comentarioremovertemp
-      '   tempsc Split(comentarioremovertemp, ",")[0]
-      '   tempsc = Scan(comentarioremovertemp, "* * *")
-      '   comentarioremovertemp = tempsc[0] & " " & tempsc[1] ' asi que simplemente los eliminamos los valores por defecto o los null
-      '   lineas[a] = comentarioremovertemp
-      ' Endif
-      tempsc = Scan(comentarioremovertemp, "* * *")
-      comentarioremovertemp = tempsc[0] & " " & tempsc[1] ' asi que simplemente los eliminamos los valores por defecto o los null
-      lineas[a] = comentarioremovertemp
+      If InStr(Upper(comentarioremovertemp), "PRIMARY") < 1 Then
+        If InStr(comentarioremovertemp, "DEFAULT") > 0 Then
+          tempsc = Scan(comentarioremovertemp, "* * * *")
+          comentarioremovertemp = tempsc[0] & " " & tempsc[1] & "," ' asi que simplemente los eliminamos los valores por defecto o los null
+        Endif
+        If InStr(Upper(comentarioremovertemp), "NULL") > 0 Or InStr(comentarioremovertemp, "'") > 0 Then
+          tempsc = Scan(comentarioremovertemp, "* * * *")
+          comentarioremovertemp = tempsc[0] & " " & tempsc[1] & "," ' asi que simplemente los eliminamos los valores por defecto o los null
+        Endif
+        lineas[a] = comentarioremovertemp
+      Endif
     Endif
     If lineas[a] = ")" Then 
       contenidoCompactado &= " " & lineas[a]
