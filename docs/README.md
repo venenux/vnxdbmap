@@ -6,9 +6,9 @@ Mini framework (work programin system), which generates code from the database o
 ABOUT/ACERCA
 ============
 
-**Visite o lea el archivo [docs/README.es.md] (docs/README.es.md) para español.**
+**Visite o lea el archivo [README.es.md] (README.es.md) para español.**
 
-**Read or visit the file [docs/README.en.md] (docs/README.en.md) on english.**
+**Read or visit the file [README.en.md] (README.en.md) on english.**
 
 El software estaba originalmente en http://mapbdvistas.blogspot.com.es/ pero el desarrollo estaba detenido.
 

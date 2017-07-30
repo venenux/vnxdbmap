@@ -14,8 +14,8 @@ Acerca del codigo generado DAO/VO
 Este codigo generado es la representacion entidad-relacion, definido en dos capas, 
 una mas cercana a base de datos (DAO) y otra mas cercana a la aplicacion (VO).
 
-*Clases VO* abstrae o representa el contenido de los elementos de base de datos.
-*Clases DAO* para crear, actualizar, borrar y obtener datos en la base de datos.
+* *Clases VO* abstrae o representa el contenido de los elementos de base de datos.
+* *Clases DAO* para crear, actualizar, borrar y obtener datos en la base de datos.
 
 El equivalente mas cercano es la combinacion de Clases Beans de Java, esto es similar.
 
@@ -27,7 +27,9 @@ Simple, instale el programa o descarge el ejecutable, al arrancar dele el esquem
 este despues de analizarlo, generara el codigo fuente en un proyecto Gambas nuevo.
 
 Si prefiere lo ultimo de la moda, puede compilarlo desde el git:
+
 `git clone https://github.com/venenux/vnxdbmap.git`
+
 Una vez clonado el repositorio abralo con el IDE Gambas y ejecutelo.
 
 HISTORY

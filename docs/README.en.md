@@ -11,10 +11,10 @@ About the generated DAO/VO code
 ---------------------------------
 
 This generated code is the entity-relationship representation, defined in two layers,
-One closer to database (DAO) and one closer to the application (VO).
+one closer to database (DAO) and one closer to the application (VO).
 
-*VO classes* abstracts or represents the contents of the database elements.
-*DAO classes* to create, update, delete and get data in the database.
+* *VO classes* abstracts or represents the contents of the database elements.
+* *DAO classes* to create, update, delete and get data in the database.
 
 The closest equivalent is the combination of Java Bean Classes and Hibernate, this is similar.
 
@@ -26,7 +26,9 @@ Simple, install the program or download the executable, when you boot the databa
 This one after analyzing it, will generate the source code in a new Gambas project.
 
 If you prefer the latest fashion, you can compile it from the git:
+
 `Git clone https: // github.com / venenux / vnxdbmap.git`
+
 Once cloned the repository open it with the Gambas IDE and execute it.
 
 HISTORY
