@@ -1,5 +1,20 @@
 ' Gambas module file
 
+''' analizar.module:<br>
+''' obtiene un bufer scrip sql del esquema y convierte cada estructura tabla/vista en una sola linea
+''' con lo que cada linea es una tabla o vista, si son 30 lineas son 30 tablas o vistas o ambas
+' ##
+'   This program its under a license that required the CC-BY-SA rules.
+'   Cant be used commercialy unless permision of Julio Sanchez B jusabejusabe@gmail.com
+' ##
+'   This program Is Distributed In the hope that it will be useful,
+'   but WITHOUT ANY WARRANTY; without even the implied warranty Of
+'   MERCHANTABILITY Or FITNESS For A PARTICULAR PURPOSE. If you want 
+'   some kind of support please comunicate in https://gitlab.com/venenux/vnxdbmap 
+'   and provide some contribution to the project
+' ##
+
+
 Private MiHttp As New HttpClient
 
 Public Sub comprobar(nombreprograma As String, actualversion As String, rutaUrl As String, Optional texto As String) '' NombrePrograma: nombre del programa, ActualVersion= es la version del programa actual, rutaUrL= es url donde tengo que leer el archivo update,label etiqueta para que aparezca texto de espere...

@@ -1,5 +1,19 @@
 ' Gambas class file
 
+''' formInforme.xxx:<br>
+''' pantalla de aviso del resultado de la creacion de el nuevo proyecto
+' ##
+'   This program its under a license that required the CC-BY-SA rules.
+'   Cant be used commercialy unless permision of Julio Sanchez B jusabejusabe@gmail.com
+' ##
+'   This program Is Distributed In the hope that it will be useful,
+'   but WITHOUT ANY WARRANTY; without even the implied warranty Of
+'   MERCHANTABILITY Or FITNESS For A PARTICULAR PURPOSE. If you want 
+'   some kind of support please comunicate in https://gitlab.com/venenux/vnxdbmap 
+'   and provide some contribution to the project
+' ##
+
+
 Private rutaproject As String = User.home & "/Devel/newproject"
 
 

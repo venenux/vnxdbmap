@@ -1,5 +1,20 @@
 ' Gambas module file
 
+''' creaTabla:<br>
+''' genrea el codigo contenido de cada clase tabla DAO y VO
+' ##
+'   This program its under a license that required the CC-BY-SA rules.
+'   Cant be used commercialy unless permision of Julio Sanchez B jusabejusabe@gmail.com
+' ##
+'   This program Is Distributed In the hope that it will be useful,
+'   but WITHOUT ANY WARRANTY; without even the implied warranty Of
+'   MERCHANTABILITY Or FITNESS For A PARTICULAR PURPOSE. If you want 
+'   some kind of support please comunicate in https://gitlab.com/venenux/vnxdbmap 
+'   and provide some contribution to the project
+' ##
+
+
+
 Public Sub ModuloBaseDatos(nombrebase As String, tipo As String, ruta As String) As String
   
   Dim codigo As String

@@ -1,3 +1,4 @@
+
 public hresultadoNuevo As Result
 Public gridviewPropio As GridView 'para tener acceso desde clases heredadas
 Public actualiza As Observer

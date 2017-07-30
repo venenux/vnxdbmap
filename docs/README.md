@@ -6,9 +6,9 @@ Mini framework (work programin system), which generates code from the database o
 ABOUT/ACERCA
 ============
 
-**Visite o lea el archivo [README.es.md] (README.es.md) para español.**
+**Visite o lea el archivo [READMEes.md] (READMEes.md) para español.**
 
-**Read or visit the file [README.en.md] (README.en.md) on english.**
+**Read or visit the file [READMEen.md] (READMEen.md) on english.**
 
 El software estaba originalmente en http://mapbdvistas.blogspot.com.es/ pero el desarrollo estaba detenido.
 
@@ -29,3 +29,19 @@ Contribute/Contribuir
 3. made changes, save, ...
 4. commit changes `git push` to your repository
 5. make a pull request to see your contribution and then try to merge...
+
+LICENSE
+=======
+
+Temporally have a license that requires share alike attribution and non comercial usage unless have the permission to:
+Temporalmente es uan licencia que requiere atribucion original y compartir igual, y comercializacion con permiso de autores:
+
+   This program its under a license that required the CC-BY-SA rules.
+   Cant be used commercialy unless permision of Julio Sanchez B jusabejusabe@gmail.com
+   .
+   This program Is Distributed In the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty Of
+   MERCHANTABILITY Or FITNESS For A PARTICULAR PURPOSE. If you want 
+   some kind of support please comunicate in https://gitlab.com/venenux/vnxdbmap 
+   and provide some contribution to the project
+

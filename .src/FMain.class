@@ -1,5 +1,19 @@
 ' Gambas class file
 
+''' FMain:<br>
+''' ventana del programa principal
+' ##
+'   This program its under a license that required the CC-BY-SA rules.
+'   Cant be used commercialy unless permision of Julio Sanchez B jusabejusabe@gmail.com
+' ##
+'   This program Is Distributed In the hope that it will be useful,
+'   but WITHOUT ANY WARRANTY; without even the implied warranty Of
+'   MERCHANTABILITY Or FITNESS For A PARTICULAR PURPOSE. If you want 
+'   some kind of support please comunicate in https://gitlab.com/venenux/vnxdbmap 
+'   and provide some contribution to the project
+' ##
+
+
 Private rutaproject As String = User.home & "/Devel/newproject"
 Private datos As New Collection 'se guardan las vistas, campos,tipo de campos y ruta
 
@@ -220,6 +234,7 @@ Public Sub ButtonGenerarCodigoVistaCodigo()
   
   campotipo = tipos
   nombretabla = Replace(datos["vistas"][0], "'", "") ' añadido 0.2.998 para eliminar comilla simple que ponia gambas3 al editar la tabla
+  nombretabla = Replace(datos["vistas"][0], "\"", "") ' añadido 0.2.998 para eliminar comilla simple que ponia gambas3 al editar la tabla
   campo = datos["campos" & comun.primeraMay(nombretabla)]
   'campotipo = datos["campostipos" & comun.primeraMay(nombretabla)]
   campotipo.Clear()

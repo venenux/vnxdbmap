@@ -1,5 +1,20 @@
 ' Gambas module file
 
+''' comun.module:<br>
+''' crea dos bufer scrip sql del esquema para que despues sea analizado por el modulo analizar
+''' se encarga de preparar que la estructura de la db sea cada objeto tabla/vista una sola linea, para separarse por fines de linea
+' ##
+'   This program its under a license that required the CC-BY-SA rules.
+'   Cant be used commercialy unless permision of Julio Sanchez B jusabejusabe@gmail.com
+' ##
+'   This program Is Distributed In the hope that it will be useful,
+'   but WITHOUT ANY WARRANTY; without even the implied warranty Of
+'   MERCHANTABILITY Or FITNESS For A PARTICULAR PURPOSE. If you want 
+'   some kind of support please comunicate in https://gitlab.com/venenux/vnxdbmap 
+'   and provide some contribution to the project
+' ##
+
+
 Public Function Between(Datos As String, Cadena1 As String, Cadena2 As String) As String
   
   Dim iinf As Integer

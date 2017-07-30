@@ -1,5 +1,25 @@
 ' Gambas module file
 
+''' analizar.module:<br>
+''' obtiene un bufer scrip sql del esquema y convierte cada estructura tabla/vista en una sola linea
+''' con lo que cada linea es una tabla o vista, si son 30 lineas son 30 tablas o vistas o ambas
+' ##
+'   This program Is Free software; you can redistribute it And / Or modify
+'   it under the terms Of the GNU General Public License As Published by
+'   the Free Software Foundation; either version 1, Or (at your option)
+'   any later version.
+' ##
+'   This program Is Distributed In the hope that it will be useful,
+'   but WITHOUT ANY WARRANTY; without even the implied warranty Of
+'   MERCHANTABILITY Or FITNESS For A PARTICULAR PURPOSE.See the
+'   GNU General Public License For more details.
+' ##
+'   You should have received a Copy Of the GNU General Public License
+'   along With this program; If Not, Write To the Free Software
+'   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+' 	MA 02110 - 1301, USA.
+' ##
+
 Private datos As New Collection
 Public listaVistas As New String[]
 Public listaCampos As New String[]
@@ -52,6 +72,7 @@ Public Function tareaTabla(codigo As String) As Collection
   
   ' bug #15 no permitir ` en los nombres de clases
   linea[a] = Replace(linea[a], "`", "", gb.IgnoreCase)
+  linea[a] = Replace(linea[a], "\"", "", gb.IgnoreCase)
   
   listaVistas.Clear() 'reuso aunque sea para tabla...
   listaCampos.Clear()
